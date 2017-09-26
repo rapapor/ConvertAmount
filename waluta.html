@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>	
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+	<body>
+	<div>
+		<label>Amount:  <input id="walutaFrom" type="text" name="walutaFrom" value="100"></label>
+		
+		<button onclick="Getconvert()">Convert</button>
+		<span id="first"></span>
+	</div>
+		<script type="text/javascript">		
+
+		function httpGet(theUrl)
+		{
+		    var xmlHttp = new XMLHttpRequest();
+		    xmlHttp.open( "GET", theUrl, false );
+		    xmlHttp.send( null );
+		    return xmlHttp.responseText;
+		}
+		
+
+				function Getconvert(){
+				  //getRate("EUR", "PLN");
+
+					var res = httpGet("http://api.fixer.io/latest?symbols=EUR,PLN");
+					var price = document.getElementsByName("walutaFrom")[0].value;
+					if(price <= 0){
+					  alert("price cannot be 0 or under 0 ");
+					  price = 1; 
+					  document.getElementsByName("walutaFrom")[0].value = 1;
+					}else if (/\D/.test(price)){
+						alert("wrong amount");
+						price = 1; 
+					  document.getElementsByName("walutaFrom")[0].value = 1;
+					}
+
+					 let jsonObject = JSON.parse(res);
+					 var euroPrice = jsonObject.rates.PLN * price; 
+
+					 document.getElementById("first").innerHTML = "Convert Euro to PLN " + price +"&euro; = " +  euroPrice.toFixed(2) +"zł"	;			 
+  				}			
+		</script>
+	</body>
+</html>
+
+
+
+
